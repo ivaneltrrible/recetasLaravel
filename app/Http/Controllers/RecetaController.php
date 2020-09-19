@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Receta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Facades\Image;
 
 class RecetaController extends Controller
 {
@@ -20,8 +22,8 @@ class RecetaController extends Controller
      */
     public function index()
     {
-        DB::table('categoria_receta')->get()->pluck('nombre', 'id', 'created_at')->dd();
-        // return view('recetas.index' ,compact());
+        Auth::user()->recetas()->dd();
+        // return view('recetas.index');
     }
 
     /**
@@ -31,7 +33,8 @@ class RecetaController extends Controller
      */
     public function create()
     {
-        return view('recetas.create');
+        $categorias = DB::table('categoria_receta')->get()->pluck('nombre', 'id');
+        return view('recetas.create' , compact('categorias'));
     }
 
     /**
@@ -42,12 +45,31 @@ class RecetaController extends Controller
      */
     public function store(Request $request)
     {
-
+        // dd($request['imagen']->store('upload-recetas', 'public'));
+        /* Validacion de los datos enviados desde el formulario */
         $data = request()->validate([
-            'titulo' => 'required|min:6|max:100'
+            'titulo' => 'required|min:6|max:100',
+            'categorias' => 'required',
+            'preparacion' => 'required',
+            'ingredientes' => 'required',
+            'imagen' => 'required|image',
         ]);
+        
+        //Obtener la ruta de img ingresada en el form
+        $ruta_img = $request['imagen']->store('upload-recetas', 'public');
+
+        //Resize de img
+        $img = Image::make( public_path("storage/{$ruta_img}"))->fit(1000,550);
+        $img->save();
+
+        /* Query a realizar en la BD */
         DB::table('recetas')->insert([
-            'titulo' => $data['titulo']
+            'titulo' => $data['titulo'],
+            'ingredientes' => $data['ingredientes'],
+            'preparacion' => $data['preparacion'],
+            'user_id' => Auth::user()->id,
+            'categoria_id' => $data['categorias'],
+            'imagen' => $ruta_img
         ]);
         
         return redirect()->action('RecetaController@index');

@@ -17,6 +17,9 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
+    <!-- Estilos que solo sean necesarios para esa pagina en especifico y no estar cargando mas liberias sin usar -->
+    @yield('styles')
+
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
@@ -80,7 +83,7 @@
 
         <div class="container">
             <div class="row">
-                <div class="py-4 col-12 mt-5">
+                <div class="py-4 col-12">
                     @yield('botones')
                 </div>
 
@@ -91,6 +94,10 @@
         </div>
 
     </div>
+
+
+    <!-- Scripts que solo sean necesarios para esa pagina en especifico y no estar cargando mas liberias sin usar -->
+    @yield('scripts')
 </body>
 
 </html>
