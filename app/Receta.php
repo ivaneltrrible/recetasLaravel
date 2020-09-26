@@ -8,8 +8,8 @@ class Receta extends Model
 {
     //
 
-    public function user()
+    public function categoria()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(CategoriaReceta::class);
     }
 }

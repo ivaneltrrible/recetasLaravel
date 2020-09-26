@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Receta;
+use App\CategoriaReceta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -22,8 +23,12 @@ class RecetaController extends Controller
      */
     public function index()
     {
-        Auth::user()->recetas()->dd();
-        // return view('recetas.index');
+        // Auth::user()->recetas->dd();
+        // dd($usuario);
+
+        //Obtener las recetas del usuario autentificado
+        $recetas = auth()->user()->recetas;
+        return view('recetas.index' , compact('recetas'));
     }
 
     /**
@@ -33,7 +38,8 @@ class RecetaController extends Controller
      */
     public function create()
     {
-        $categorias = DB::table('categoria_receta')->get()->pluck('nombre', 'id');
+        // $categorias = DB::table('categoria_recetas')->get()->pluck('nombre', 'id');
+        $categorias = CategoriaReceta::all(['id', 'nombre']);
         return view('recetas.create' , compact('categorias'));
     }
 
@@ -62,12 +68,21 @@ class RecetaController extends Controller
         $img = Image::make( public_path("storage/{$ruta_img}"))->fit(1000,550);
         $img->save();
 
-        /* Query a realizar en la BD */
-        DB::table('recetas')->insert([
+        /* Query a realizar en la BD (sin modelo) */
+        // DB::table('recetas')->insert([
+        //     'titulo' => $data['titulo'],
+        //     'ingredientes' => $data['ingredientes'],
+        //     'preparacion' => $data['preparacion'],
+        //     'user_id' => Auth::user()->id,
+        //     'categoria_id' => $data['categorias'],
+        //     'imagen' => $ruta_img
+        // ]);
+
+        //Insertar receta a BD con modelo
+        auth()->user()->recetas()->create([
             'titulo' => $data['titulo'],
             'ingredientes' => $data['ingredientes'],
             'preparacion' => $data['preparacion'],
-            'user_id' => Auth::user()->id,
             'categoria_id' => $data['categorias'],
             'imagen' => $ruta_img
         ]);
