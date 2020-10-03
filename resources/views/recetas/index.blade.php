@@ -23,7 +23,7 @@
                     <td>{{$receta->categoria->nombre}}</td>
                     <td>
                         <a href="#" class="btn btn-dark mr-2">Editar</a>
-                        <a href="#" class="btn btn-success  mr-2">Ver</a>
+                        <a href="{{route('recetas.show', $receta->id)}}" class="btn btn-success  mr-2">Ver</a>
                         <a href="#" class="btn btn-danger mr-2">Eliminar</a>
                     </td>
                 </tr>
