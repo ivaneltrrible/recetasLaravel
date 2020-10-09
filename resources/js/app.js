@@ -20,7 +20,11 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+
+//Sirve el config para que el trix editor no lo tome como como componente de Vuejs 
+Vue.config.ignoredElements = ['trix-editor', 'trix-toolbar'];
 Vue.component('fecha-receta', require('./components/FechaReceta.vue').default);
+Vue.component('eliminar-receta', require('./components/EliminarReceta.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

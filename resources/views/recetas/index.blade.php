@@ -21,10 +21,13 @@
                 <tr>
                     <td>{{$receta->titulo}}</td>
                     <td>{{$receta->categoria->nombre}}</td>
-                    <td>
-                        <a href="#" class="btn btn-dark mr-2">Editar</a>
-                        <a href="{{route('recetas.show', $receta->id)}}" class="btn btn-success  mr-2">Ver</a>
-                        <a href="#" class="btn btn-danger mr-2">Eliminar</a>
+                    <td class="btn-crud"> 
+                        <eliminar-receta>
+                            
+                        </eliminar-receta>
+                        <a href="{{route('recetas.edit', $receta->id)}}" class="btn btn-dark w-100 d-block mb-2">Editar</a>
+                        <a href="{{route('recetas.show', $receta->id)}}" class="btn btn-success  w-100 d-block mb-2">Ver</a>
+                        
                     </td>
                 </tr>
                 @endforeach
