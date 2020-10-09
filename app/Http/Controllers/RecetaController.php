@@ -111,6 +111,9 @@ class RecetaController extends Controller
     public function edit(Receta $receta)
     {
         //
+        // $categorias = DB::table('categoria_recetas')->get()->pluck('nombre', 'id');
+        $categorias = CategoriaReceta::all(['id', 'nombre']);
+        return view('recetas.edit', compact('categorias', 'receta'));
     }
 
     /**
@@ -122,7 +125,37 @@ class RecetaController extends Controller
      */
     public function update(Request $request, Receta $receta)
     {
-        //
+        //policies si es el usuario que creo la receta entonces la puede actualizar
+        $this->authorize('update', $receta);
+        
+        //Validar formulario de editar receta
+        $data = request()->validate([
+            'titulo' => 'required|min:6|max:100',
+            'categorias' => 'required',
+            'preparacion' => 'required',
+            'ingredientes' => 'required',
+        ]);
+        $receta->titulo = $data['titulo'];
+        $receta->categoria_id = $data['categorias'];
+        $receta->preparacion = $data['preparacion'];
+        $receta->ingredientes = $data['ingredientes'];
+
+        if(request('imagen')){
+             //Obtener la ruta de img ingresada en el form
+            $ruta_img = $request['imagen']->store('upload-recetas', 'public');
+
+            //Resize de img
+            $img = Image::make( public_path("storage/{$ruta_img}"))->fit(1000,550);
+            $img->save();
+
+            //asignar al objeto
+            $receta->imagen = $ruta_img;
+        }
+
+        //Guardar los cambios 
+        $receta->save();
+
+        return redirect()->action('RecetaController@index');
     }
 
     /**
@@ -133,6 +166,12 @@ class RecetaController extends Controller
      */
     public function destroy(Receta $receta)
     {
-        //
+        //Validacion de policy
+        $this->authorize('delete', $receta);
+
+        //Eliminar de DB y DOM
+        $receta->delete();
+
+        return redirect()->action('RecetaController@index');
     }
 }
