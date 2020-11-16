@@ -13,7 +13,7 @@ class Receta extends Model
 
     public function categoria()
     {
-        return $this->belongsTo(CategoriaReceta::class);
+        return $this->belongsTo(CategoriaReceta::class, 'categoria_id');
     }
     public function autor(){
         // user_id se refiere al FK de recetas al que esta conectada a los usuarios
