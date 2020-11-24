@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Receta;
 use App\CategoriaReceta;
+use App\Receta;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 
@@ -27,8 +26,15 @@ class RecetaController extends Controller
         // dd($usuario);
 
         //Obtener las recetas del usuario autentificado
-        $recetas = auth()->user()->recetas;
-        return view('recetas.index' , compact('recetas'));
+        /* $recetas = auth()->user()->recetas; */
+
+        //Obtener id de usuario autentificado en el momento
+        $usuarioId = auth()->user()->id;
+
+        //Obtener la informacion ya paginada desde una consulta
+        $recetas = Receta::where('user_id', $usuarioId)->paginate(2);
+
+        return view('recetas.index', compact('recetas'));
     }
 
     /**
@@ -40,7 +46,7 @@ class RecetaController extends Controller
     {
         // $categorias = DB::table('categoria_recetas')->get()->pluck('nombre', 'id');
         $categorias = CategoriaReceta::all(['id', 'nombre']);
-        return view('recetas.create' , compact('categorias'));
+        return view('recetas.create', compact('categorias'));
     }
 
     /**
@@ -60,12 +66,12 @@ class RecetaController extends Controller
             'ingredientes' => 'required',
             'imagen' => 'required|image',
         ]);
-        
+
         //Obtener la ruta de img ingresada en el form
         $ruta_img = $request['imagen']->store('upload-recetas', 'public');
 
         //Resize de img
-        $img = Image::make( public_path("storage/{$ruta_img}"))->fit(1000,550);
+        $img = Image::make(public_path("storage/{$ruta_img}"))->fit(1000, 550);
         $img->save();
 
         /* Query a realizar en la BD (sin modelo) */
@@ -84,9 +90,9 @@ class RecetaController extends Controller
             'ingredientes' => $data['ingredientes'],
             'preparacion' => $data['preparacion'],
             'categoria_id' => $data['categorias'],
-            'imagen' => $ruta_img
+            'imagen' => $ruta_img,
         ]);
-        
+
         return redirect()->action('RecetaController@index');
     }
 
@@ -98,8 +104,7 @@ class RecetaController extends Controller
      */
     public function show(Receta $receta)
     {
-        //
-        return view('recetas.show', compact('receta'));;
+        return view('recetas.show', compact('receta'));
     }
 
     /**
@@ -110,7 +115,9 @@ class RecetaController extends Controller
      */
     public function edit(Receta $receta)
     {
-        //
+        ////Validamos con policies que sea la misma persona que quiere editar
+        $this->authorize('view', $receta);
+
         // $categorias = DB::table('categoria_recetas')->get()->pluck('nombre', 'id');
         $categorias = CategoriaReceta::all(['id', 'nombre']);
         return view('recetas.edit', compact('categorias', 'receta'));
@@ -127,7 +134,7 @@ class RecetaController extends Controller
     {
         //policies si es el usuario que creo la receta entonces la puede actualizar
         $this->authorize('update', $receta);
-        
+
         //Validar formulario de editar receta
         $data = request()->validate([
             'titulo' => 'required|min:6|max:100',
@@ -140,19 +147,19 @@ class RecetaController extends Controller
         $receta->preparacion = $data['preparacion'];
         $receta->ingredientes = $data['ingredientes'];
 
-        if(request('imagen')){
-             //Obtener la ruta de img ingresada en el form
+        if (request('imagen')) {
+            //Obtener la ruta de img ingresada en el form
             $ruta_img = $request['imagen']->store('upload-recetas', 'public');
 
             //Resize de img
-            $img = Image::make( public_path("storage/{$ruta_img}"))->fit(1000,550);
+            $img = Image::make(public_path("storage/{$ruta_img}"))->fit(1000, 550);
             $img->save();
 
             //asignar al objeto
             $receta->imagen = $ruta_img;
         }
 
-        //Guardar los cambios 
+        //Guardar los cambios
         $receta->save();
 
         return redirect()->action('RecetaController@index');

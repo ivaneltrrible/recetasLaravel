@@ -6,13 +6,16 @@
             crossorigin="anonymous" />
     @endsection
     @section('botones')
-        <a href="{{ route('recetas.index') }}" class="btn btn-primary mr-2">Volver</a>
+        <a href="{{ route('recetas.index') }}" class="btn btn-outline-secondary mr-2 text-uppercase font-weight-bold">
+            <svg class="w-6 h-6 icono" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z"></path></svg>
+            Volver
+        </a>
     @endsection
 @section('content')
     <h2 class="text-center text-primary font-weight-bold">Editar mi perfil</h2>
     <div class="row justify-content-center mb-5">
         <div class="col-md-10 bg-white p-3">
-            <form action="{{ route('perfiles.edit', $perfil->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('perfiles.update', ['perfil' => $perfil->id]) }}" method="POST" enctype="multipart/form-data">
                 {{-- token para enviar formularios en laravel por seguridad
                 --}}
                 @csrf
@@ -20,7 +23,7 @@
                 <div class="form-group">
                     <label for="name">Name: </label>
                     <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror"
-                        value="{{ ($perfil->name) }}" placeholder="Tu nombre">
+                        value="{{  $perfil->usuario->name }}" placeholder="Tu nombre">
 
                     @error('name')
                     <span class="invalid-feedback d-block" role="alert">
@@ -28,20 +31,20 @@
                     </span>
                     @enderror
                 </div>
-                {{-- SECTION TERMINA TITULO --}}
+                {{-- SECTION TERMINA Name --}}
 
                 <div class="form-group mb-3">
                     <label for="url">Sitio web:</label>
                     
                     <input type="text" name="url" id="url" class="form-control @error('url') is-invalid @enderror"
-                        value="{{ ($perfil->url) }}" placeholder="Tu Sitio web">
+                        value="{{ ($perfil->usuario->url) }}" placeholder="Tu Sitio web">
                     @error('url')
                     <span class="invalid-feedback d-block" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
                 </div>
-                {{-- SECTION TERMINA PREPARACION --}}
+                {{-- SECTION TERMINA Sitio Web --}}
 
                 <div class="form-group">
                     <label for="biografia">Biografia:</label>
@@ -49,6 +52,7 @@
                     <trix-editor
                         input="biografia"
                         class="form-control @error('biografia') is-invalid @enderror"
+                        style="overflow-y:auto"
                     ></trix-editor>
                     @error('biografia')
                     <span class="invalid-feedback d-block" role="alert">
@@ -56,10 +60,10 @@
                     </span>
                     @enderror
                 </div>
-                {{-- SECTION TERMINA INGREDIENTES --}}
-
+                {{-- SECTION TERMINA Biografia --}}
+                
                 <div class="form-group">
-                    <label for="imagen">Elige una imagen</label>
+                    <label for="imagen">Elige una imagen de perfil</label>
 
                     <input type="file"
                             class="form-control @error('imagen')is-invalid @enderror"
@@ -72,10 +76,13 @@
                     </span>
                     @enderror
                 </div>
-                <div class="mb-4">
-                    <p>Imagen actual: </p>
-                    <img src="/storage/{{$perfil->imagen}}" alt="imagen de la receta" style="width: 300px">
-                </div> 
+                @if ( $perfil->imagen )
+                    <div class="mb-4">
+                        <p>Imagen actual: </p>
+                        <img src="/storage/{{$perfil->imagen }}" alt="imagen de la receta" style="width: 300px">
+                    </div> 
+                @endif
+                
 
                 <div class="form-group">
                     <input type="submit" value="Actualizar Receta" class="btn btn-primary">
@@ -84,7 +91,7 @@
             </form>
         </div>
     </div>
-    {{ $perfil->usuario->recetas }}
+    {{ $perfil->usuario }}
 @endsection
 
 @section('scripts')
