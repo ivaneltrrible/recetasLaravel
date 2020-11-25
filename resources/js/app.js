@@ -4,9 +4,9 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+require("./bootstrap");
 
-window.Vue = require('vue');
+window.Vue = require("vue");
 
 /**
  * The following block of code may be used to automatically register your
@@ -21,10 +21,14 @@ window.Vue = require('vue');
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
-//Sirve el config para que el trix editor no lo tome como como componente de Vuejs 
-Vue.config.ignoredElements = ['trix-editor', 'trix-toolbar'];
-Vue.component('fecha-receta', require('./components/FechaReceta.vue').default);
-Vue.component('eliminar-receta', require('./components/EliminarReceta.vue').default);
+//Sirve el config para que el trix editor no lo tome como como componente de Vuejs
+Vue.config.ignoredElements = ["trix-editor", "trix-toolbar"];
+Vue.component("fecha-receta", require("./components/FechaReceta.vue").default);
+Vue.component(
+    "eliminar-receta",
+    require("./components/EliminarReceta.vue").default
+);
+Vue.component("like-button", require("./components/LikeButton.vue").default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -32,5 +36,10 @@ Vue.component('eliminar-receta', require('./components/EliminarReceta.vue').defa
  */
 
 const app = new Vue({
-    el: '#app',
+    el: "#app"
 });
+
+$(".like-btn").on("click", function() {
+    $(this).toggleClass("like-active");
+});
+

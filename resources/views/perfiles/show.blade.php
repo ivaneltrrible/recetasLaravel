@@ -37,12 +37,16 @@
                             </div>
                         </div>
                     </div>
+                    
                 @endforeach
+                    
             @else
                 <p class="text-center col-12">
                     No hay recetas creadas
                 </p>
             @endif
         </div>
+        <div class="d-flex justify-content-center">{{ $recetas->links() }}</div>
     </div>
+    
 @endsection

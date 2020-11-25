@@ -55,6 +55,8 @@
                 </h2>
                 {!! $receta->preparacion !!}
             </div>
+
+            <like-button></like-button>
         </div>
 
     </article>
