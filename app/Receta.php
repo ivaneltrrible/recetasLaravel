@@ -15,8 +15,15 @@ class Receta extends Model
     {
         return $this->belongsTo(CategoriaReceta::class, 'categoria_id');
     }
-    public function autor(){
+    public function autor()
+    {
         // user_id se refiere al FK de recetas al que esta conectada a los usuarios
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**Cantidad de likes que se le dio a la receta por los usuarios */
+    public function likes()
+    {
+        return $this->belongsToMany(User::class, 'likes_receta');
     }
 }

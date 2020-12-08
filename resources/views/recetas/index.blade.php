@@ -22,7 +22,7 @@
                     <td>{{$receta->titulo}}</td>
                     <td>{{$receta->categoria->nombre}}</td>
                     <td class="btn-crud"> 
-                        <eliminar-receta>
+                        <eliminar-receta receta-id="{{ $receta->id }}">
                             
                         </eliminar-receta>
                         <a href="{{route('recetas.edit', $receta->id)}}" class="btn btn-dark w-100 d-block mb-2">Editar</a>

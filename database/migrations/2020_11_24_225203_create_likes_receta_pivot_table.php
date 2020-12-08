@@ -18,6 +18,7 @@ class CreateLikesRecetaPivotTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('receta_id')->constrained();
             $table->timestamps();
+            
         });
     }
 

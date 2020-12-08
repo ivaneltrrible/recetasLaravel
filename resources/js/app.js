@@ -22,6 +22,9 @@ window.Vue = require("vue");
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
 //Sirve el config para que el trix editor no lo tome como como componente de Vuejs
+import VueSweetalert2 from 'vue-sweetalert2';
+
+Vue.use(VueSweetalert2);
 Vue.config.ignoredElements = ["trix-editor", "trix-toolbar"];
 Vue.component("fecha-receta", require("./components/FechaReceta.vue").default);
 Vue.component(
@@ -34,6 +37,7 @@ Vue.component("like-button", require("./components/LikeButton.vue").default);
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+
 
 const app = new Vue({
     el: "#app"
