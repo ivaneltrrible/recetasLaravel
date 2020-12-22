@@ -1921,6 +1921,8 @@ __webpack_require__.r(__webpack_exports__);
   props: ['recetaId'],
   methods: {
     eliminarReceta: function eliminarReceta() {
+      var _this = this;
+
       this.$swal({
         title: '¿Desea eliminar esta receta?',
         text: 'No se puede revertir este proceso',
@@ -1933,10 +1935,28 @@ __webpack_require__.r(__webpack_exports__);
           cancelButton: 'btn btn-outline-danger'
         },
         buttonsStyling: false
-      }).then(function (respuesta) {
-        console.log('Eliminado');
-      })["catch"](function (error) {
-        console.log(error);
+      }).then(function (res) {
+        if (res.value) {
+          var params = {
+            id: _this.recetaId
+          }; //Axios peticion
+
+          axios.post("/recetas/".concat(_this.recetaId), {
+            params: params,
+            _method: 'delete'
+          }).then(function (respuesta) {
+            _this.$swal({
+              icon: 'success',
+              title: 'Eliminado',
+              text: 'Se elimino la receta correctamente'
+            }); //eliminar receta del DOM
+
+
+            _this.$el.parentNode.parentNode.parentNode.removeChild(_this.$el.parentNode.parentNode);
+          })["catch"](function (error) {
+            console.log(error);
+          });
+        }
       });
     }
   }
@@ -1987,7 +2007,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['recetaId'],
+  props: ['recetaId', 'like'],
+  mounted: function mounted() {
+    console.log(this.like);
+  },
   methods: {
     likeReceta: function likeReceta() {
       axios.post('/recetas/' + this.recetaId).then(function (respuesta) {
@@ -66484,6 +66507,7 @@ var render = function() {
   return _c("div", [
     _c("span", {
       staticClass: "like-btn",
+      class: { "like-active": this.like },
       on: {
         click: function($event) {
           return _vm.likeReceta()

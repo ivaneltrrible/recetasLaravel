@@ -25,11 +25,27 @@ export default {
                                 },
                                 buttonsStyling: false
                         })
-                        .then(respuesta => {
-                                console.log('Eliminado');
-                        })
-                        .catch(error => {
-                                console.log(error);
+                        .then((res) => {
+                                if(res.value){
+                                        const params = {
+                                                id: this.recetaId
+                                        }
+                                        //Axios peticion
+                                        axios.post(`/recetas/${this.recetaId}`, {params, _method: 'delete'})
+                                        .then(respuesta => {
+                                                this.$swal({
+                                                        icon: 'success',
+                                                        title: 'Eliminado',
+                                                        text: 'Se elimino la receta correctamente'
+                                                });
+                                                //eliminar receta del DOM
+                                                this.$el.parentNode.parentNode.parentNode.removeChild(this.$el.parentNode.parentNode);
+                                        })
+                                        .catch(error => {
+                                                console.log(error);
+                                        })
+                                        
+                                }
                         })
                 }
         },
