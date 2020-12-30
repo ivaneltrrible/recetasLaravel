@@ -14,13 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-
-// Route::get('/', function () {
-//     return view('create');
-// });
+/* Vista de Inicio */
+Route::get('/', 'InicioController@index')->name('inicio.index');
 
 /* ### SECTION --RUTAS DE LA PAGINA DE RECETA-- ###   */
-Route::get('/', 'RecetaController@index')->name('recetas.index');
+
 Route::get('/recetas', 'RecetaController@index')->name('recetas.index');
 Route::get('/recetas/create', 'RecetaController@create')->name('recetas.create');
 Route::post('/recetas', 'RecetaController@store')->name('recetas.store');

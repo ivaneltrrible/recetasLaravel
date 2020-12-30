@@ -2006,18 +2006,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['recetaId', 'like'],
-  mounted: function mounted() {
-    console.log(this.like);
+  props: ['recetaId', 'like', 'likes'],
+  data: function data() {
+    return {
+      isActive: this.like,
+      totalLikes: this.likes
+    };
   },
   methods: {
     likeReceta: function likeReceta() {
+      var _this = this;
+
       axios.post('/recetas/' + this.recetaId).then(function (respuesta) {
-        console.log(respuesta);
+        if (respuesta.data.attached.length > 0) {
+          _this.$data.totalLikes++;
+        } else {
+          _this.$data.totalLikes--;
+        } //Efecto al dar like mas interactivo
+
+
+        _this.isActive = !_this.isActive;
       })["catch"](function (error) {
-        console.log(error);
+        if (error.response.status === 401) {
+          window.location = '/register';
+        }
       });
+    }
+  },
+  computed: {
+    cantidadLikes: function cantidadLikes() {
+      return this.totalLikes;
     }
   }
 });
@@ -66504,16 +66524,22 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
+  return _c("div", { staticClass: "text-center" }, [
     _c("span", {
       staticClass: "like-btn",
-      class: { "like-active": this.like },
+      class: { "like-active": _vm.isActive },
       on: {
         click: function($event) {
           return _vm.likeReceta()
         }
       }
-    })
+    }),
+    _vm._v(" "),
+    _c("p", [
+      _vm._v(
+        "A " + _vm._s(_vm.cantidadLikes) + " personas les gusta esta receta"
+      )
+    ])
   ])
 }
 var staticRenderFns = []
@@ -78769,6 +78795,8 @@ __webpack_require__.r(__webpack_exports__);
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
+
+/* import 'owl.carousel'; */
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
@@ -78782,10 +78810,10 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-//Sirve el config para que el trix editor no lo tome como como componente de Vuejs
 
 
-Vue.use(vue_sweetalert2__WEBPACK_IMPORTED_MODULE_0__["default"]);
+Vue.use(vue_sweetalert2__WEBPACK_IMPORTED_MODULE_0__["default"]); //Sirve el config para que el trix editor no lo tome como como componente de Vuejs
+
 Vue.config.ignoredElements = ["trix-editor", "trix-toolbar"];
 Vue.component("fecha-receta", __webpack_require__(/*! ./components/FechaReceta.vue */ "./resources/js/components/FechaReceta.vue")["default"]);
 Vue.component("eliminar-receta", __webpack_require__(/*! ./components/EliminarReceta.vue */ "./resources/js/components/EliminarReceta.vue")["default"]);
@@ -78798,9 +78826,6 @@ Vue.component("like-button", __webpack_require__(/*! ./components/LikeButton.vue
 
 var app = new Vue({
   el: "#app"
-});
-$(".like-btn").on("click", function () {
-  $(this).toggleClass("like-active");
 });
 
 /***/ }),

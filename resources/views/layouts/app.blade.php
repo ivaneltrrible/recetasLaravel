@@ -103,6 +103,7 @@
 
     <!-- Scripts que solo sean necesarios para esa pagina en especifico y no estar cargando mas liberias sin usar -->
     @yield('scripts')
+    
 </body>
 
 </html>

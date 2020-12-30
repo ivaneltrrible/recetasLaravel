@@ -56,10 +56,12 @@
                 {!! $receta->preparacion !!}
             </div>
 
-            {{ $like }}
+            {{-- {{ $like }}
+            {{ $likes }} --}}
             <like-button 
                 receta-id="{{$receta->id}}"
                 like="{{ $like }}"
+                likes="{{ $likes }}"
             ></like-button>
         </div>
 

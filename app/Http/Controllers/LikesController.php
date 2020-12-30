@@ -8,6 +8,11 @@ use App\Http\Controllers\Controller;
 
 class LikesController extends Controller
 {
+    //Restrinccion para dar likes - tiene que estar resgistrado para dar like a receta
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     /**
      * Store a newly created resource in storage.
