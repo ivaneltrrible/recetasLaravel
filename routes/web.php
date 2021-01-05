@@ -27,6 +27,8 @@ Route::get('/recetas/{receta}/edit', 'RecetaController@edit')->name('recetas.edi
 Route::put('/recetas/{receta}', 'RecetaController@update')->name('recetas.update');
 Route::delete('/recetas/{receta}', 'RecetaController@destroy')->name('recetas.destroy'); 
 
+Route::get('/categoria/{categoriaReceta}', 'CategoriasController@show')->name('categorias.show');
+
 //Hace lo mismo pero simplificado de todas las rutas comentadas ^
 /* Route::resource('recetas', 'RecetaController'); */
 

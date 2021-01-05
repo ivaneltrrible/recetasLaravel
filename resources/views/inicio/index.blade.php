@@ -35,7 +35,7 @@
     </script>
 @endsection
 
-
+{{-- Por las ultimas recetas agregadas --}}
 @section('content')
     <div class="container nuevas-recetas">
         <h2 class="titulo-categoria text-uppercase mb-4">
@@ -54,15 +54,29 @@
             @endforeach
         </div>    
     </div>
+    {{-- Por recetas mas Votadas --}}
+    <div class="container">
+        <h2 class="titulo-categoria text-uppercase mb-4 mt-3">Recetas mas Votadas</h2>
+        <div class="row">
+                @foreach ($votadas as $receta)
+                    @include('ui.receta')
+                @endforeach
+        </div>
+    </div>
+
+    {{-- Por Categoria --}}
     @foreach ($recetas as $key => $grupo )
         <div class="container">
-            <h2 class="titulo-categoria text-uppercase mb-4">{{ str_replace('-',' ', $key) }}</h2>
-            @foreach ($grupo as $recetas)
-                @foreach ($recetas as $receta)
-                    {{ $receta }}
+            <h2 class="titulo-categoria text-uppercase mb-4 mt-3">{{ str_replace('-',' ', $key) }}</h2>
+            <div class="row">
+                @foreach ($grupo as $recetas)
+                    @foreach ($recetas as $receta)
+                        @include('ui.receta')
+                    @endforeach
                 @endforeach
-            @endforeach
+            </div>
         </div>
+        
     @endforeach
 
 @endsection
