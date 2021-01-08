@@ -11,7 +11,7 @@ class CategoriasController extends Controller
     //
     public function show(CategoriaReceta $categoriaReceta)
     {   
-        $recetas = Receta::where('categoria_id', $categoriaReceta->id)->paginate(2);   
+        $recetas = Receta::where('categoria_id', $categoriaReceta->id)->simplePaginate(2);   
         
         return view('categorias.show', compact('recetas'));
     }
