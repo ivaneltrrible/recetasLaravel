@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h2 class="titulo-categoria text-uppercase">Por Categoria</h2>
+        <h2 class="titulo-categoria text-uppercase"><b>Categoria</b>: {{ $categoriaReceta->nombre }}</h2>
         <div class="row">
             @foreach ($recetas as $receta)
                 @include('ui.receta')
