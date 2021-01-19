@@ -7,6 +7,19 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.green.min.css" />
 @endsection
 
+@section('hero')
+    <div class="hero-categorias">
+        <form action="{{ route('search.show') }}" class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="texto-buscar col-md-4">
+                    <p class="display-4">Encuentra una receta para tus proximas comidas</p>
+                    <input type="search" name="buscar" id="buscar" placeholder="Buscar Receta" class="form-control">
+                </div>
+            </div>
+        </form>
+    </div>
+@endsection
+
 @section('scripts')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>

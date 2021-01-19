@@ -29,6 +29,9 @@ Route::delete('/recetas/{receta}', 'RecetaController@destroy')->name('recetas.de
 
 Route::get('/categoria/{categoriaReceta}', 'CategoriasController@show')->name('categorias.show');
 
+//Buscar Recetas
+Route::get('/buscar', 'RecetaController@search')->name('search.show');
+
 //Hace lo mismo pero simplificado de todas las rutas comentadas ^
 /* Route::resource('recetas', 'RecetaController'); */
 

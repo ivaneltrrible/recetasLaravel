@@ -13,7 +13,7 @@ class RecetaController extends Controller
     public function __construct()
     {
         /* Validar que este logueado el usuario */
-        $this->middleware('auth', ['except' => 'show']);
+        $this->middleware('auth', ['except' => ['show', 'search']]);
     }
     /**
      * Display a listing of the resource.
@@ -189,5 +189,16 @@ class RecetaController extends Controller
         $receta->delete();
 
         return redirect()->action('RecetaController@index');
+    }
+    
+    //Metodo para buscar consultas desde el index SEARCH input
+    public function search(Request $request)
+    {
+        $search_receta = $request['buscar'];
+
+        $recetas = Receta::where('titulo', 'like', '%'.$search_receta.'%')->paginate(1);
+        $recetas->appends(['buscar' => $search_receta]);
+
+        return view('buscador.show', compact('recetas', 'search_receta'));
     }
 }

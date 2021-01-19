@@ -28,7 +28,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-primary shadow-sm barra">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/recetas') }}">
+                <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -106,6 +106,8 @@
                 </div>
             </div>
         </nav>
+
+        @yield('hero')
         
         <div class="container">
             <div class="row">
