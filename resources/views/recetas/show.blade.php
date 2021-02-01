@@ -14,7 +14,7 @@
 @section('content')
     {{-- <p>{{ $receta }}</p> --}}
 
-    <article class="contenido-recetas">
+    <article class="contenido-recetas bg-white p-5">
         <h2 class="text-center mb-4">{{ $receta->titulo }}</h2>
         <div class="receta-imagen">
             <img src="/storage/{{ $receta->imagen }}" alt="Imagen de la receta" class="w-100 mb-4">
@@ -25,13 +25,19 @@
                 <span class="text-primary font-weight-bold">
                     Escrito en:
                 </span>
-                {{ $receta->categoria->nombre }}
+                <a class="text-dark" href="{{ route('categorias.show', $receta->categoria->id) }}">
+                    {{ $receta->categoria->nombre }}
+                </a>
+                
             </p>
             <p>
                 <span class="text-primary font-weight-bold">
                     Autor:
                 </span>
-                {{ $receta->autor->name}}
+                <a class="text-dark" href="{{ route('perfiles.show', $receta->autor->id) }}">
+                    {{ $receta->autor->name}}
+                </a>
+                
             </p>
             <p>
                 <span class="text-primary font-weight-bold">
